@@ -29,9 +29,11 @@ namespace PerfumeShop
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<BrilliantDbContext>(options =>
-                options.UseSqlServer(
-                Configuration.GetConnectionString("BrilliantDb")));
+            services.AddDbContext<BrilliantDbContext>(options => {
+                options.UseSqlServer(Configuration.GetConnectionString("BrilliantDb"));
+                
+        });
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

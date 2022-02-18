@@ -12,8 +12,10 @@ namespace DAL.Data
     {
         public BrilliantDbContext(DbContextOptions options) : base(options)
         {
+            
         }
+
         public virtual DbSet<Product> Products { get;set; }
-        public virtual DbSet<Category> Ctaegories { get;set; }
+        public virtual DbSet<Category> Categories { get;set; }
     }
 }
