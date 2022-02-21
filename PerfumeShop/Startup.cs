@@ -15,6 +15,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using BLL.Interfaces;
 using BLL.Services;
+using BLL.Utilities;
+using AutoMapper;
 
 namespace PerfumeShop
 {
@@ -26,8 +28,6 @@ namespace PerfumeShop
         }
 
         public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
@@ -36,6 +36,7 @@ namespace PerfumeShop
                 
         });
 
+            services.AddAutoMapper((e) => e.AddProfile(new MapperProfile()));
             services.AddControllers();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddSwaggerGen(c =>
@@ -55,11 +56,10 @@ namespace PerfumeShop
             }
 
             app.UseHttpsRedirection();
-
+            
             app.UseRouting();
 
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
