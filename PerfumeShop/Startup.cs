@@ -13,6 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BLL.Interfaces;
+using BLL.Services;
 
 namespace PerfumeShop
 {
@@ -35,6 +37,7 @@ namespace PerfumeShop
         });
 
             services.AddControllers();
+            services.AddScoped<ICategoryService, CategoryService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PerfumeShop", Version = "v1" });

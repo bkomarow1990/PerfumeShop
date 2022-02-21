@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BLL.Services
 {
@@ -36,9 +37,9 @@ namespace BLL.Services
             throw new NotImplementedException();
         }
 
-        public IEnumerable<CategoryDTO> GetAllCategories()
+        public async Task<IEnumerable<CategoryDTO>> GetAllCategoriesAsync()
         {
-            throw new NotImplementedException();
+            return _mapper.Map<IEnumerable<CategoryDTO>>(await _context.Categories.ToListAsync());
         }
 
         public CategoryDTO GetCategoryById(int id)
