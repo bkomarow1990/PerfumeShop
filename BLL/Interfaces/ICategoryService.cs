@@ -9,7 +9,7 @@ namespace BLL.Interfaces
 {
     public interface ICategoryService
     {
-        void AddCategory(CategoryDTO category);
+        Task AddCategory(CategoryDTO category);
         Task<IEnumerable<CategoryDTO>> GetAllCategoriesAsync();
         CategoryDTO GetCategoryById(int id);
         void EditCategory(CategoryDTO category);

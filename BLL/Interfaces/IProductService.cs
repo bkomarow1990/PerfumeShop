@@ -9,7 +9,7 @@ namespace BLL.Interfaces
 {
     public interface IProductService
     {
-        void AddProductt(ProductDTO category);
+        void AddProduct(ProductDTO category);
         IEnumerable<ProductDTO> GetAllProducts();
         ProductDTO GetProductById(int id);
         void EditProduct(ProductDTO category);

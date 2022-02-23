@@ -9,22 +9,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using DAL.Interfaces;
 
 namespace BLL.Services
 {
     public class CategoryService : ICategoryService
     {
-        private readonly BrilliantDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public CategoryService(BrilliantDbContext context, IMapper mapper)
+        public CategoryService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public void AddCategory(CategoryDTO category)
+        public async void AddCategory(CategoryDTO category)
         {
-            _context.Categories.Add(_mapper.Map<Category>(category));
-            _context.SaveChanges();
+            await _unitOfWork.CategoryRepository.Add(_mapper.Map<Category>(category));
+            await _unitOfWork.CompleteAsync();
         }
 
         public void DeleteCategoryById(int id)
@@ -39,10 +40,15 @@ namespace BLL.Services
 
         public async Task<IEnumerable<CategoryDTO>> GetAllCategoriesAsync()
         {
-            return _mapper.Map<IEnumerable<CategoryDTO>>(await _context.Categories.ToListAsync());
+            return _mapper.Map<IEnumerable<CategoryDTO>>(await _unitOfWork.CategoryRepository.All());
         }
 
         public CategoryDTO GetCategoryById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task ICategoryService.AddCategory(CategoryDTO category)
         {
             throw new NotImplementedException();
         }

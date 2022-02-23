@@ -1,4 +1,5 @@
 ﻿using DAL.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Data
 {
-    public class BrilliantDbContext : DbContext
+    public class BrilliantDbContext : IdentityDbContext
     {
         public BrilliantDbContext(DbContextOptions options) : base(options)
         {
