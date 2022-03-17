@@ -33,8 +33,12 @@ namespace PerfumeShop
         {
 
 
+
             services.AddRepository();
-            services.AddCustomServices();
+            services.AddUnitOfWork();
+            services.AddServices();
+            services.AddHttpContextAccessor();
+            services.AddFluentValidation();
             services.AddDbContext<BrilliantDbContext>(options => {
                 options.UseSqlServer(Configuration.GetConnectionString("BrilliantDb"));
                 
