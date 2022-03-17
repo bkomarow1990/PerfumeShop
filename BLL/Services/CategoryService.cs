@@ -8,43 +8,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BLL.Exceptions;
+using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace BLL.Services
 {
     public class CategoryService : ICategoryService
     {
-        private readonly BrilliantDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public CategoryService(BrilliantDbContext context, IMapper mapper)
+        public CategoryService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public void AddCategory(CategoryDTO category)
+        public async Task AddCategory(CategoryDTO category)
         {
-            _context.Categories.Add(_mapper.Map<Category>(category));
-            _context.SaveChanges();
-        }
-
-        public void DeleteCategoryById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void EditCategory(CategoryDTO category)
-        {
-            throw new NotImplementedException();
+            if (category == null)
+                throw new HttpException($"Error with create new category!", System.Net.HttpStatusCode.BadRequest);
+            await _unitOfWork.CategoryRepository.InsertAsync(_mapper.Map<Category>(category));
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<CategoryDTO>> GetAllCategoriesAsync()
         {
-            return _mapper.Map<IEnumerable<CategoryDTO>>(await _context.Categories.ToListAsync());
+            return _mapper.Map<IEnumerable<CategoryDTO>>(await _unitOfWork.CategoryRepository.GetAsync());
         }
 
-        public CategoryDTO GetCategoryById(int id)
+        public async Task<CategoryDTO> GetCategoryById(int id) => _mapper.Map<CategoryDTO>(await _unitOfWork.CategoryRepository.GetByIdAsync(id));
+
+        public async Task EditCategory(CategoryDTO category)
         {
-            throw new NotImplementedException();
+            await _unitOfWork.CategoryRepository.UpdateAsync(_mapper.Map<Category>(category));
+            await _unitOfWork.SaveChangesAsync();
         }
+
+        public async Task DeleteCategoryById(int id)
+        {
+            await _unitOfWork.CategoryRepository.DeleteAsync(await _unitOfWork.CategoryRepository.GetByIdAsync(id));
+            await _unitOfWork.SaveChangesAsync();
+        }
+
     }
 }

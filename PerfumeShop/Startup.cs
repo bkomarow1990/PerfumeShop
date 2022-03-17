@@ -17,6 +17,7 @@ using BLL.Interfaces;
 using BLL.Services;
 using BLL.Utilities;
 using AutoMapper;
+using BLL;
 
 namespace PerfumeShop
 {
@@ -31,14 +32,15 @@ namespace PerfumeShop
         public void ConfigureServices(IServiceCollection services)
         {
 
+
+            services.AddRepository();
+            services.AddCustomServices();
             services.AddDbContext<BrilliantDbContext>(options => {
                 options.UseSqlServer(Configuration.GetConnectionString("BrilliantDb"));
                 
         });
-
             services.AddAutoMapper((e) => e.AddProfile(new MapperProfile()));
             services.AddControllers();
-            services.AddScoped<ICategoryService, CategoryService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PerfumeShop", Version = "v1" });

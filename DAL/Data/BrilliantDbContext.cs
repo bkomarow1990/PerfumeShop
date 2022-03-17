@@ -11,6 +11,10 @@ namespace DAL.Data
 {
     public class BrilliantDbContext : DbContext
     {
+        public BrilliantDbContext()
+        {
+        }
+
         public BrilliantDbContext(DbContextOptions options) : base(options)
         {
             
